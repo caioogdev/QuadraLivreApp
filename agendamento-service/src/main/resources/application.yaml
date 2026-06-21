@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: agendamento-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5442/reservas_service
+    username: admin
+    password: adminpassword
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus # Libera a rota para o Prometheus ler
+  metrics:
+    tags:
+      application: meu-microsservico-java # Adiciona o nome do app em todas as métricas (útil no Grafana)
+
+kafka:
+  bootstrap-servers: localhost:9092
+  consumer:
+    group-id: agendamento-service
+    auto-offset-reset: earliest
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    properties:
+      spring.json.trusted.packages: "*"
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+server:
+  port: 8087
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
