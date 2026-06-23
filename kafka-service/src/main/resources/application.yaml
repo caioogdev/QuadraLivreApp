@@ -14,21 +14,12 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     properties:
-        spring.json.trusted.packages: "*"
-        spring.json.use.type.headers: false
-        spring.json.value.default.type: br.com.infnet.kafkaservice.shared.messaging.dtos.CourtEvent
+      spring.json.trusted.packages: "*"
+      spring.json.use.type.headers: false
+      spring.json.value.default.type: br.com.infnet.kafkaservice.shared.messaging.dtos.CourtEvent
 
   elasticsearch:
     uris: http://localhost:9200
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info, metrics, prometheus
-  metrics:
-    tags:
-      application: kafka-service-java
 
 server:
   port: 8082
@@ -39,6 +30,11 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     registry-fetch-interval-seconds: 5
   instance:
-    hostname: host.docker.internal
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
+
+logging:
+  level:
+    root: WARN
+    br.com.infnet: INFO
+    "CourtController_KafkaService": INFO

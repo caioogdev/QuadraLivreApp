@@ -2,7 +2,11 @@ package br.com.infnet.kafkaservice.courts.controllers;
 
 import br.com.infnet.kafkaservice.courts.documents.CourtDocument;
 import br.com.infnet.kafkaservice.courts.repositories.CourtRepository;
+import br.com.infnet.kafkaservice.shared.messaging.consumers.CourtEventConsumer;
+import br.com.infnet.kafkaservice.shared.messaging.dtos.CourtEvent;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.Criteria;
@@ -21,7 +25,7 @@ import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 public class CourtController {
 
-    private final CourtRepository courtRepository;
+    private static final Logger logger = LoggerFactory.getLogger(CourtController.class);
     private final ElasticsearchOperations elasticsearchOperations;
 
     @GetMapping
@@ -34,6 +38,8 @@ public class CourtController {
             @RequestParam(required = false) String street,
             @RequestParam(required = false) String zipCode,
             @RequestParam(required = false) Boolean active) {
+
+        logger.info("Montando consulta do ElasticSearch");
 
         Criteria criteria = new Criteria();
 

@@ -29,7 +29,7 @@ public class ReservaController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<Reserva> alterarStatus(
             @PathVariable UUID id,
-            @RequestParam StatusReserva status) {
+            @RequestBody StatusReserva status) {
         Reserva reservaAtualizada = reservaService.alterarStatus(id, status);
         return ResponseEntity.ok(reservaAtualizada);
     }

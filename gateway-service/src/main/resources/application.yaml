@@ -26,9 +26,9 @@ spring:
                     name: catalogo-service
                     fallbackUri: forward:/fallback/courts
             - id: reservas-service
-              uri: lb://agendamentos-service
+              uri: lb://agendamento-service
               predicates:
-                - Path= /reservas, /reservas/**
+                - Path= /reservas,/reservas/**
               filters:
                 - name: CircuitBreaker
                   args:
@@ -56,6 +56,12 @@ resilience4j:
         waitDurationInOpenState: 15s
         permittedNumberOfCallsInHalfOpenState: 3
         slidingWindowType: COUNT_BASED
+      agendamento-service:
+        slidingWindowSize: 10
+        failureRateThreshold: 20
+        waitDurationInOpenState: 15s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: COUNT_BASED
 
 management:
   endpoints:
@@ -75,6 +81,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     registry-fetch-interval-seconds: 5
   instance:
-    hostname: host.docker.internal
+    # hostname: host.docker.internal
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
