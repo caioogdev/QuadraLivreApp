@@ -2,6 +2,9 @@ spring:
   application:
     name: gateway-service
 
+  reactor:
+    context-propagation: auto
+
   cloud:
     gateway:
       server:
@@ -64,6 +67,9 @@ resilience4j:
         slidingWindowType: COUNT_BASED
 
 management:
+  tracing:
+    sampling:
+      probability: 1.0
   endpoints:
     web:
       exposure:

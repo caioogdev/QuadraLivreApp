@@ -14,13 +14,16 @@ spring:
     show-sql: true
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: health, info, metrics, prometheus # Libera a rota para o Prometheus ler
-  metrics:
-    tags:
-      application: meu-microsservico-java # Adiciona o nome do app em todas as métricas (útil no Grafana)
+    tracing:
+      sampling:
+        probability: 1.0
+    endpoints:
+      web:
+        exposure:
+          include: health, info, metrics, prometheus # Libera a rota para o Prometheus ler
+    metrics:
+      tags:
+        application: meu-microsservico-java # Adiciona o nome do app em todas as métricas (útil no Grafana)
 
 kafka:
   bootstrap-servers: localhost:9092

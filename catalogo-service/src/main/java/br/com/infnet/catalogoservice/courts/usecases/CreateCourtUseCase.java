@@ -10,6 +10,8 @@ import br.com.infnet.catalogoservice.courts.validators.CourtValidator;
 import br.com.infnet.catalogoservice.shared.messaging.dtos.CourtEvent;
 import br.com.infnet.catalogoservice.shared.messaging.producers.CourtProducer;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @Service
 @RequiredArgsConstructor
 public class CreateCourtUseCase {
+    private static final Logger logger= LoggerFactory.getLogger(CreateCourtUseCase.class);
     private final CourtRepository courtRepository;
     private final CourtValidator courtValidator;
     private final CourtMapper courtMapper;
@@ -27,6 +30,7 @@ public class CreateCourtUseCase {
     @Transactional
     public CourtCreateResponseDTO execute(CourtRequestDTO dto){
         if(courtValidator.existsCourtByName(dto.name())) {
+            logger.error("Court with name '{}' already exists", dto.name());
             throw new RuntimeException("Court with this name already exists");
         }
 

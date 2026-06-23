@@ -3,13 +3,13 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss} %-5level %logger{36} [trace=%X{traceId}] [span=%X{spanId}] - %msg%n</pattern>
         </encoder>
     </appender>
 
     <appender name="PAPERTRAIL" class="com.papertrailapp.logback.Syslog4jAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>[4_anFlP-t2E0CVwQ06WAkJNw2b1XDWk5hDM-tnjLcB9BIkPr0nURUC8S6k0mfjQDhGrZ8io@41058] ${appName} %thread %-5level %logger{36} - %msg</pattern>
+            <pattern>[4_anFlP-t2E0CVwQ06WAkJNw2b1XDWk5hDM-tnjLcB9BIkPr0nURUC8S6k0mfjQDhGrZ8io@41058] ${appName} %thread %-5level %logger{36} [trace=%X{traceId}] [span=%X{spanId}] - %msg</pattern>
         </layout>
         <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">
             <host>syslog.collector.na-01.cloud.solarwinds.com</host>
@@ -17,7 +17,9 @@
         </syslogConfig>
     </appender>
 
-    <root level="INFO">
+    <logger name="br.com.infnet" level="INFO"/>
+
+    <root level="OFF">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="PAPERTRAIL"/>
     </root>

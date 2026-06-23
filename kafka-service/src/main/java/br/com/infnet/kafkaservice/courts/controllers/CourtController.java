@@ -1,9 +1,6 @@
 package br.com.infnet.kafkaservice.courts.controllers;
 
 import br.com.infnet.kafkaservice.courts.documents.CourtDocument;
-import br.com.infnet.kafkaservice.courts.repositories.CourtRepository;
-import br.com.infnet.kafkaservice.shared.messaging.consumers.CourtEventConsumer;
-import br.com.infnet.kafkaservice.shared.messaging.dtos.CourtEvent;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.StreamSupport;
+import org.slf4j.MDC;
 
 @RestController
 @RequestMapping("/courts/search")
@@ -39,8 +36,8 @@ public class CourtController {
             @RequestParam(required = false) String zipCode,
             @RequestParam(required = false) Boolean active) {
 
-        logger.info("Montando consulta do ElasticSearch");
-
+        logger.info("Recebendo requisição de busca");
+        logger.info("MDC traceId={}, spanId={}", MDC.get("traceId"), MDC.get("spanId"));
         Criteria criteria = new Criteria();
 
         if (name != null)        criteria = criteria.and("name").is(name);
@@ -59,6 +56,8 @@ public class CourtController {
                 .stream()
                 .map(SearchHit::getContent)
                 .toList();
+
+        logger.info("Busca concluida: {} resultados", result.size());
 
         return ResponseEntity.ok(result);
     }
